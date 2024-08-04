@@ -27,9 +27,9 @@ public class Piece : MonoBehaviour
         moveTime = Time.time + moveDelay;
         lockTime = 0f;
 
-        if (cells == null) {
-            cells = new Vector3Int[data.cells.Length];
-        }
+        // if (cells == null) {
+        cells = new Vector3Int[data.cells.Length];
+        // }
 
         for (int i = 0; i < cells.Length; i++) {
             cells[i] = (Vector3Int)data.cells[i];
@@ -139,6 +139,14 @@ public class Piece : MonoBehaviour
 
     private void Rotate(int direction)
     {
+        // FIXME(SJORS): this only works for '+', we need to actually fix this 
+        // for any other pieces.
+        if (this.data.tetromino == Tetromino.PLUS)
+        {
+            return;
+        }
+
+
         // Store the current rotation in case the rotation fails
         // and we need to revert
         int originalRotation = rotationIndex;

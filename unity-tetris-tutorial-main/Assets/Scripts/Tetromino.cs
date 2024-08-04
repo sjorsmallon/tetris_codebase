@@ -3,13 +3,13 @@ using UnityEngine.Tilemaps;
 
 public enum Tetromino
 {
-    I, J, L, O, S, T, Z
+    I, J, L, O, S, T, Z, PLUS, U
 }
 
 // - Golden (money) 
 // - glass (more points but can break (or will break?))
 // - moss (proliferate / grow piece over time?)
-// - Stone (do not dissolve after row solve)
+// - Stone (do not dissolve after row solve, but cracks over N row clears)
 // - Steroids: pieces are twice as big.
 // - Moon stone: cannot rotate at all, but gives point bonus?
 // - cruise control: piece continually moves left to right, wrapping side-to-side, or bouncing.
@@ -28,7 +28,7 @@ public enum Tetromino
 
 public enum TetrominoType
 {
-    Default, Gold, MoonStone, Shadow,
+    Default, Gold, Moonstone, Shadow, Frost, CrackedStone,
 }
 
 [System.Serializable]
@@ -36,6 +36,7 @@ public struct TetrominoData
 {
     public Tile tile;
     public Tetromino tetromino;
+    public TetrominoType tetrominoType;
 
     public Vector2Int[] cells { get; private set; }
     public Vector2Int[,] wallKicks { get; private set; }
@@ -44,6 +45,18 @@ public struct TetrominoData
     {
         cells = Data.Cells[tetromino];
         wallKicks = Data.WallKicks[tetromino];
+
+        // FIXME(SJORS): replace this with a generic solution later.
+        if (this.tetromino == Tetromino.PLUS)
+        {
+            this.tetrominoType = TetrominoType.CrackedStone;
+        }
+
+        if (this.tetromino == Tetromino.U)
+        {
+            this.tetrominoType = TetrominoType.Frost;
+        }
+    
     }
 
 }

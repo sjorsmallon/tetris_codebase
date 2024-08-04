@@ -16,6 +16,9 @@ public static class Data
         { Tetromino.S, new Vector2Int[] { new Vector2Int( 0, 1), new Vector2Int( 1, 1), new Vector2Int(-1, 0), new Vector2Int( 0, 0) } },
         { Tetromino.T, new Vector2Int[] { new Vector2Int( 0, 1), new Vector2Int(-1, 0), new Vector2Int( 0, 0), new Vector2Int( 1, 0) } },
         { Tetromino.Z, new Vector2Int[] { new Vector2Int(-1, 1), new Vector2Int( 0, 1), new Vector2Int( 0, 0), new Vector2Int( 1, 0) } },
+        { Tetromino.PLUS, new Vector2Int[] { new Vector2Int(0, -1), new Vector2Int( -1, 0), new Vector2Int(0, 0), new Vector2Int(1, 0), new Vector2Int(0, 1) } },
+        { Tetromino.U, new Vector2Int[] { new Vector2Int(-1, -1), new Vector2Int( 1, -1), new Vector2Int(-1, 0), new Vector2Int(0, 0), new Vector2Int(1, 0) } },
+
     };
 
     private static readonly Vector2Int[,] WallKicksI = new Vector2Int[,] {
@@ -40,6 +43,22 @@ public static class Data
         { new Vector2Int(0, 0), new Vector2Int( 1, 0), new Vector2Int( 1, 1), new Vector2Int(0,-2), new Vector2Int( 1,-2) },
     };
 
+    private static readonly Vector2Int[,] WallKicksPLUS = new Vector2Int[,] {};
+
+    //FIXME(SJORS): do some investigation how this operates :/
+    private static readonly Vector2Int[,] WallKicksU = new Vector2Int[,] {
+        { new Vector2Int(0, 0), new Vector2Int(-1, 0), new Vector2Int(-1, 1), new Vector2Int(0,-2), new Vector2Int(-1,-2) },
+        { new Vector2Int(0, 0), new Vector2Int( 1, 0), new Vector2Int( 1,-1), new Vector2Int(0, 2), new Vector2Int( 1, 2) },
+        { new Vector2Int(0, 0), new Vector2Int( 1, 0), new Vector2Int( 1,-1), new Vector2Int(0, 2), new Vector2Int( 1, 2) },
+        { new Vector2Int(0, 0), new Vector2Int(-1, 0), new Vector2Int(-1, 1), new Vector2Int(0,-2), new Vector2Int(-1,-2) },
+        { new Vector2Int(0, 0), new Vector2Int( 1, 0), new Vector2Int( 1, 1), new Vector2Int(0,-2), new Vector2Int( 1,-2) },
+        { new Vector2Int(0, 0), new Vector2Int(-1, 0), new Vector2Int(-1,-1), new Vector2Int(0, 2), new Vector2Int(-1, 2) },
+        { new Vector2Int(0, 0), new Vector2Int(-1, 0), new Vector2Int(-1,-1), new Vector2Int(0, 2), new Vector2Int(-1, 2) },
+        { new Vector2Int(0, 0), new Vector2Int( 1, 0), new Vector2Int( 1, 1), new Vector2Int(0,-2), new Vector2Int( 1,-2) },
+        { new Vector2Int(0, 0), new Vector2Int(-1, 0), new Vector2Int(-1,-1), new Vector2Int(0, 2), new Vector2Int(-1, 2) },
+        { new Vector2Int(0, 0), new Vector2Int( 1, 0), new Vector2Int( 1, 1), new Vector2Int(0,-2), new Vector2Int( 1,-2) },
+    };
+
     public static readonly Dictionary<Tetromino, Vector2Int[,]> WallKicks = new Dictionary<Tetromino, Vector2Int[,]>()
     {
         { Tetromino.I, WallKicksI },
@@ -49,6 +68,9 @@ public static class Data
         { Tetromino.S, WallKicksJLOSTZ },
         { Tetromino.T, WallKicksJLOSTZ },
         { Tetromino.Z, WallKicksJLOSTZ },
+        { Tetromino.PLUS, WallKicksPLUS },
+        { Tetromino.U, WallKicksU},
+
     };
 
 }

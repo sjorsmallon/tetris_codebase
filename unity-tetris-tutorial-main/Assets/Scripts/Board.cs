@@ -9,8 +9,9 @@ public class Board : MonoBehaviour
 {
 
 
-
-
+    //@FIXME(SJORS): hacky workaround to dynamically alter the sprite at a position
+    // (by replacing it by this tile which is filled in via the editor)
+    public Tile crackedTilePhase2;
 
     public bool debug = true;
 
@@ -110,7 +111,7 @@ public class Board : MonoBehaviour
             }
         }
     
-
+        // pick the first piece_idx in the shuffled array
         int piece_idx = piecesToPlay[0];
         piecesToPlay.RemoveAt(0);
         
@@ -212,6 +213,9 @@ public class Board : MonoBehaviour
             if (!tilemap.HasTile(position)) {
                 return false;
             }
+            
+
+
         }
 
         return true;
@@ -221,10 +225,26 @@ public class Board : MonoBehaviour
     {
         RectInt bounds = Bounds;
 
+        // if there is stone in this row, it does not get erased.
+        List<int> columns_to_skip_dropping = new List<int>();
         // Clear all tiles in the row
         for (int col = bounds.xMin; col < bounds.xMax; col++)
         {
             Vector3Int position = new Vector3Int(col, row, 0);
+
+            TileBase tileBase = tilemap.GetTile(position);
+
+            // Check if the tile is a Tile
+            if (tileBase is Tile tile)
+            {
+                if (tile.sprite.name == "CrackedStone")
+                {
+                    columns_to_skip_dropping.Add(col);
+                    tilemap.SetTile(position, crackedTilePhase2);
+                    continue;    
+                }
+            }
+
             tilemap.SetTile(position, null);
         }
 
@@ -233,6 +253,13 @@ public class Board : MonoBehaviour
         {
             for (int col = bounds.xMin; col < bounds.xMax; col++)
             {
+                
+                // if there is stone underneath this column entry, persist.
+                if (columns_to_skip_dropping.Contains(col))
+                {
+                   continue;
+                }
+
                 Vector3Int position = new Vector3Int(col, row + 1, 0);
                 TileBase above = tilemap.GetTile(position);
 

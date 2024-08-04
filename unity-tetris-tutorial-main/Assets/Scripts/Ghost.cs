@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using System.Collections.Generic;
 
 public class Ghost : MonoBehaviour
 {
@@ -8,13 +9,13 @@ public class Ghost : MonoBehaviour
     public Piece trackingPiece;
 
     public Tilemap tilemap { get; private set; }
-    public Vector3Int[] cells { get; private set; }
+    public List<Vector3Int> cells { get; private set; }
     public Vector3Int position { get; private set; }
 
     private void Awake()
     {
         tilemap = GetComponentInChildren<Tilemap>();
-        cells = new Vector3Int[4];
+        cells = new List<Vector3Int>();
     }
 
     private void LateUpdate()
@@ -27,7 +28,7 @@ public class Ghost : MonoBehaviour
 
     private void Clear()
     {
-        for (int i = 0; i < cells.Length; i++)
+        for (int i = 0; i < cells.Count; i++)
         {
             Vector3Int tilePosition = cells[i] + position;
             tilemap.SetTile(tilePosition, null);
@@ -36,9 +37,13 @@ public class Ghost : MonoBehaviour
 
     private void Copy()
     {
-        for (int i = 0; i < cells.Length; i++) {
-            cells[i] = trackingPiece.cells[i];
+        cells.Clear();
+
+        for (int i = 0; i != trackingPiece.cells.Length; ++i)
+        {
+            cells.Add(trackingPiece.cells[i]);
         }
+
     }
 
     private void Drop()
@@ -66,7 +71,7 @@ public class Ghost : MonoBehaviour
 
     private void Set()
     {
-        for (int i = 0; i < cells.Length; i++)
+        for (int i = 0; i < cells.Count; i++)
         {
             Vector3Int tilePosition = cells[i] + position;
             tilemap.SetTile(tilePosition, tile);
